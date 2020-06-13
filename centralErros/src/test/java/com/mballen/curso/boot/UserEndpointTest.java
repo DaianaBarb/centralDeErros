@@ -31,9 +31,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.mballen.curso.boot.dto.response.UserResponse;
-import com.mballen.curso.boot.model.User;
-import com.mballen.curso.boot.repositories.UserRepository;
+import com.codenation.curso.central.error.dto.response.UserResponse;
+import com.codenation.curso.central.error.models.User;
+import com.codenation.curso.central.error.repositories.UserRepository;
 
 import javassist.NotFoundException;
 

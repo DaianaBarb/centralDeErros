@@ -14,8 +14,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import com.mballen.curso.boot.controller.UserController;
-import com.mballen.curso.boot.repositories.UserRepository;
+
+import com.codenation.curso.central.error.controls.UserController;
+import com.codenation.curso.central.error.repositories.UserRepository;
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
 @WebMvcTest

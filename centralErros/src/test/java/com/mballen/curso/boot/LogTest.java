@@ -12,12 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.mballen.curso.boot.dto.request.LogRequest;
-import com.mballen.curso.boot.model.ErrorLevelsEnum;
-import com.mballen.curso.boot.model.Log;
-import com.mballen.curso.boot.model.User;
-import com.mballen.curso.boot.repositories.LogRepository;
-import com.mballen.curso.boot.service.interfaces.LogService;
+import com.codenation.curso.central.error.dto.request.LogRequest;
+import com.codenation.curso.central.error.models.ErrorLevelsEnum;
+import com.codenation.curso.central.error.models.Log;
+import com.codenation.curso.central.error.models.User;
+import com.codenation.curso.central.error.repositories.LogRepository;
+import com.codenation.curso.central.error.service.interfaces.LogService;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class LogTest {

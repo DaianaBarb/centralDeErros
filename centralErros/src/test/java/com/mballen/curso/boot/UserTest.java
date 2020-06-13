@@ -9,12 +9,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import com.mballen.curso.boot.model.User;
-import com.mballen.curso.boot.repositories.UserRepository;
-import com.mballen.curso.boot.model.Log;
-import com.mballen.curso.boot.model.ErrorLevelsEnum;
-import com.mballen.curso.boot.dto.request.*;
-import com.mballen.curso.boot.dto.response.LogResponse;
+
+import com.codenation.curso.central.error.dto.request.*;
+import com.codenation.curso.central.error.dto.response.LogResponse;
+import com.codenation.curso.central.error.models.ErrorLevelsEnum;
+import com.codenation.curso.central.error.models.Log;
+import com.codenation.curso.central.error.models.User;
+import com.codenation.curso.central.error.repositories.UserRepository;
 //como que faz para utilizarmos nosso proprio banco de dados para fazer os testes?
 //e so colocar a anotação:
 //@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
