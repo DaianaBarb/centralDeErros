@@ -6,6 +6,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
+
+import com.codenation.curso.central.error.dto.request.LogRequest;
+import com.codenation.curso.central.error.dto.response.LogResponse;
+import com.codenation.curso.central.error.models.ErrorLevelsEnum;
+import com.codenation.curso.central.error.models.Log;
+import com.codenation.curso.central.error.repositories.LogRepository;
+import com.codenation.curso.central.error.service.interfaces.LogService;
 import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,13 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import com.codenation.curso.central.error.dto.request.LogRequest;
-import com.codenation.curso.central.error.dto.response.LogResponse;
-import com.codenation.curso.central.error.models.ErrorLevelsEnum;
-import com.codenation.curso.central.error.models.Log;
-import com.codenation.curso.central.error.repositories.LogRepository;
-import com.codenation.curso.central.error.service.interfaces.LogService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -154,9 +154,8 @@ public class LogController {
 	    	    @GetMapping("/getAll")
 	    	    @ApiOperation(value ="Returns a list of logs according to the requested parameter")
 	    	    
-	    	    public ResponseEntity<List<LogResponse>> findAll( @QuerydslPredicate(root = Log.class) Predicate predicate,@RequestParam String origin,
-	    	    		@RequestParam ErrorLevelsEnum errorLevel,@RequestParam LocalDate date,
-	    	    		@RequestParam int quantity,@RequestParam String description,@RequestParam String logDoEventoString,
+	    	    public ResponseEntity<List<LogResponse>> findAll( @QuerydslPredicate(root = Log.class) Predicate predicate,@RequestParam(required = false,defaultValue ="null") String origin,
+	    	   	@RequestParam(required =true) ErrorLevelsEnum errorLevel,
 	    	    @RequestParam(value = "page", required = false, defaultValue = "0") int page,
 	    	    @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
 	    	         

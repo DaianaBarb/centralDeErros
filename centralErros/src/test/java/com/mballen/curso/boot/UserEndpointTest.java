@@ -3,7 +3,6 @@ package com.mballen.curso.boot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.apache.http.HttpStatus;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.util.Arrays;
@@ -12,7 +11,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
 import org.modelmapper.ModelMapper;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;

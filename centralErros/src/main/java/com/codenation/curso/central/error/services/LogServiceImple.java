@@ -1,4 +1,4 @@
-package com.codenation.curso.central.error.boot.services;
+package com.codenation.curso.central.error.services;
 
 import java.time.LocalDate;
 import java.util.List;

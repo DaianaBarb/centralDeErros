@@ -37,7 +37,7 @@ public interface LogRepository extends JpaRepository<Log, Long>, QuerydslPredica
 	 
 	 Page<Log> findByQuantity(int quantity, Pageable paging);
 	 @SuppressWarnings("NullableProblems")
-	    @Override
+	   @Override
 	    default void customize(QuerydslBindings bindings, QLog log) {
 
 	      //nao fazer a busca pelo parametro Id
@@ -56,5 +56,5 @@ public interface LogRepository extends JpaRepository<Log, Long>, QuerydslPredica
 	        bindings.bind(log.quantity).first((path, value) -> {
 	            return path.eq(value);
 	        });
-	    }
+	    } 
 }

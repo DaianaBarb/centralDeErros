@@ -5,7 +5,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
-
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -19,17 +18,12 @@ import lombok.Setter;
 
 @Getter()
 @Setter()
-//@MappedSuperclass
-//@EntityListeners(AuditingEntityListener.class)
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public class Auditable<U> {
   @CreatedBy
   @Column(name = "created_by")
   private U createdBy;
-
-  @CreatedDate
-  @Column(name = "created_date")
-  
-  private Date createdDate;
 
   @LastModifiedBy
   @Column(name = "last_modified_by")
@@ -39,5 +33,5 @@ public class Auditable<U> {
   @LastModifiedDate
   @Column(name = "last_modified_date")
   
-  private Date lastModifiedDate;
+  private LocalDate lastModifiedDate;
 }

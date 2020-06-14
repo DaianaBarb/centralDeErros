@@ -29,9 +29,8 @@ public class SwaggerConfig {
 		 List<SecurityScheme> auth = new ArrayList<SecurityScheme>();
 	      auth.add(new BasicAuth("bearer"));
         return new Docket(DocumentationType.SWAGGER_2)
-        		.securitySchemes(auth)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.mballen.curso.boot"))
+                .apis(RequestHandlerSelectors.basePackage("com.codenation.curso.central.error"))
                 .paths(PathSelectors.any()) // qualuer caminho
                 .build()
                 //.securitySchemes ( matrizes . asList (securityScheme ()))

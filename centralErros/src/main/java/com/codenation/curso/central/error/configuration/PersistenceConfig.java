@@ -32,8 +32,8 @@ public class PersistenceConfig {
 		return new RestTemplate();
 	}
 
-  /*  @Bean
+    @Bean
     public AuditorAware<String> auditorAware(){
         return new AuditorAwareImpl();
-    } */
+    } 
 }

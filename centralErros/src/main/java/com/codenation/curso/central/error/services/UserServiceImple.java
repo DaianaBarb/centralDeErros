@@ -1,4 +1,4 @@
-package com.codenation.curso.central.error.boot.services;
+package com.codenation.curso.central.error.services;
 
 import java.util.List;
 import java.util.Optional;

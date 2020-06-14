@@ -2,6 +2,8 @@
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -23,7 +25,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "TB_LOG")
-public class Log  implements Serializable{
+public class Log extends Auditable<String>  implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -54,7 +56,7 @@ public class Log  implements Serializable{
  // @NotBlank(message = "Date is can not be blank")
     @NotNull(message = "Date is a required parameter")
     @CreatedDate
-  @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column
     private LocalDate date;
     
@@ -80,7 +82,17 @@ public class Log  implements Serializable{
 		this.quantity=quantity;
 	}
 	
-	
+	public Log(Long id, ErrorLevelsEnum errorLevel, String description, String origin, LocalDate date,
+			int quantity, String createdBy, String lastModifiedBy, LocalDate lastModifiedDate) {
+		this.errorLevel=errorLevel;
+		this.date=date;
+		this.origin=origin;
+		this.description=description;
+		this.quantity=quantity;
+		this.setCreatedBy(createdBy);
+		this.setLastModifiedBy(lastModifiedBy);
+		this.setLastModifiedDate(lastModifiedDate);
+	}
 	
 	
 }

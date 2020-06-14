@@ -204,7 +204,11 @@
 
 	<build>
 		<plugins>
-	 <plugin>
+	
+	
+	
+	<!-- PLUGIN DE GERAÇÃO DA CLASSE Q 
+                  <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
@@ -223,7 +227,7 @@
                     </configuration>
                 </execution>
             </executions>
-        </plugin>
+        </plugin> -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
