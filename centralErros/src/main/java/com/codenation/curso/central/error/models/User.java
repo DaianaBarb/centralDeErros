@@ -22,7 +22,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "TB_USER")
-public class User  implements Serializable {
+public class User   implements Serializable {
 	
 	public User( String userEmail, String name,String password,String role, short enabled) {
 		this.userEmail = userEmail;

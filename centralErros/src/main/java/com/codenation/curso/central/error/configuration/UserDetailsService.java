@@ -18,15 +18,20 @@ import com.codenation.curso.central.error.repositories.UserRepository;
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 	@Autowired
 	UserRepository repository;
-	
+	public String userMail;
 	@Override
 	public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
 		com.codenation.curso.central.error.models.User usuario = repository.findByUserEmail(userEmail).orElseThrow(() -> new UsernameNotFoundException("No existe usuario"));
 		List<GrantedAuthority> authorityListAdmin = AuthorityUtils.createAuthorityList("ROLE_USER","ROLE_ADMIN");
 		List<GrantedAuthority> authorityListUser = AuthorityUtils.createAuthorityList("ROLE_USER");
-	    
+		this.userMail=usuario.getUserEmail();
 		return new User(usuario.getUserEmail(),usuario.getPassword(),authorityListAdmin);
 	   
+	}
+
+	public String returnUser() {
+
+		 return this.userMail;
 	}
 
 	

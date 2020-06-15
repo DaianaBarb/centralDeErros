@@ -1,4 +1,5 @@
 package com.codenation.curso.central.error.configuration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,10 +10,16 @@ import java.util.Optional;
 @Component
 public class AuditorAwareImpl implements AuditorAware<String>
 {
+	@Autowired
+	private  UserDetailsService userDetailsService;
 
-  @Override
+	
+ @Override
     public Optional<String> getCurrentAuditor(){
-    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		return Optional.ofNullable(((User) auth.getPrincipal()).getUserEmail());
+
+    	return Optional.ofNullable(userDetailsService.returnUser());
+		
+		
+		
     }
 }
