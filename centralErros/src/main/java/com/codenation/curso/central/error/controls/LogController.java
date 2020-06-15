@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,6 +34,7 @@ import org.springframework.http.ResponseEntity;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
@@ -154,10 +156,16 @@ public class LogController {
 	    	    @GetMapping("/getAll")
 	    	    @ApiOperation(value ="Returns a list of logs according to the requested parameter")
 	    	    
-	    	    public ResponseEntity<List<LogResponse>> findAll( @QuerydslPredicate(root = Log.class) Predicate predicate,@RequestParam(required = false,defaultValue ="null") String origin,
-	    	   	@RequestParam(required =true) ErrorLevelsEnum errorLevel,
+	    	    public ResponseEntity<List<LogResponse>> findAll( @QuerydslPredicate(root = Log.class) Predicate predicate,
+	    	    		@ApiParam @RequestParam(required = false) String origin,
+	    	    		@ApiParam  @RequestParam(required =false) ErrorLevelsEnum errorLevel,
+	    	    		@ApiParam  @RequestParam(required =false) String description,
+	    	    		@ApiParam  @RequestParam(required =false) LocalDate date,
+	    	    		@ApiParam  @RequestParam(required =false) String logDoEvento,
+	    	    		@ApiParam  @RequestParam(required =false)  Integer  quantity,
 	    	    @RequestParam(value = "page", required = false, defaultValue = "0") int page,
 	    	    @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+	            
 	    	         
 	    	    	Page<Log> logs= logService.findAllPredicate(predicate, page, size);
 	    	    	Page<LogResponse> pageLog = new PageImpl<>(logs.getContent().stream()
