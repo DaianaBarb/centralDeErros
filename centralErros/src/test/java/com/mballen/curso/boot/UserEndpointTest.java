@@ -1,5 +1,9 @@
 package com.mballen.curso.boot;
 
+import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,23 +26,27 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.codenation.curso.central.error.dto.response.UserResponse;
 import com.codenation.curso.central.error.models.User;
 import com.codenation.curso.central.error.repositories.UserRepository;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javassist.NotFoundException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class UserEndpointTest {
+public class UserEndPointTest {
 @Autowired
 private TestRestTemplate restTemplate;
 @LocalServerPort
@@ -51,7 +59,13 @@ private MockMvc mockmvc;
 @Autowired
 private ModelMapper modelMapper;
 
+String token = "BearereyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJEQVlAMTIzNC5DT00iLCJleHAiOjE1OTIzNTkzNTR9.5ksunfGR3i798nnS3a_g_C7Yg2WMYVp36cBrtiThqYpHfKJqnNeOit-EUDYI8ufQaME8yZp7rjxasK2vJhmN5Q";
+private static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(),
+	      MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
+Gson gson = new GsonBuilder().create();
 
+//-------------- sem token----------
+/*
 @Test
 public void searchUsersShouldReturnCode200() {
 	Optional<User> user= Optional.ofNullable(new User((long)1,"user@user","user","123","ADMIN",(short)1));
@@ -71,63 +85,77 @@ public void notfoundUserShouldReturnCode200() {
 	ResponseEntity<String> response= restTemplate.getForEntity("/user/{id}",String.class, user.get().getId());
 	Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(200);
 }
+*/
 
-
-
-
-
-
-
-
-
-/*
- 
-
- * ---------------------------------------------------
- @Test
-public void listUserWhenUserNameAndPasswordAreIncorrectShouldReturnStatusCode200 () {
-	//restTemplate = restTemplate.withBasicAuth("1", "1");
-	ResponseEntity<String> response= restTemplate.getForEntity("/user/users", String.class);
-	Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(200);
-}
+// --------com token ----------
 
 @Test
-public void getUserByIdAreIncorrectShouldReturnStatusCode500() {
-//	System.out.println(port);
-	//restTemplate = restTemplate.withBasicAuth("1", "1");
-	ResponseEntity<String> response= restTemplate.getForEntity("/user/2",String.class);
-	Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(500);
-}
-@Test
-public void listUserWhenUsernameAndPasswordAreCorrectShouldReturnStatusCode200() {
-	User user= new User((long)1,"user@user","user","123","ADMIN",(short)1);
-	User user2
-	= new User((long)1,"user@user","user","123","ADMIN",(short)1);
-	List<User>lista = new ArrayList<>();
-	lista.add(user);
-	lista.add(user2);
-	BDDMockito.when(userRepository.findAll()).thenReturn(lista);
-	ResponseEntity<String> response= restTemplate.getForEntity("/user/users/",String.class);
-	Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(200);
-}
-
-@Test
-public void buscarPorId() {
-	Optional<User> user= Optional.ofNullable(new User((long)1,"user@user","user","123","ADMIN",(short)1));
+public void shouldReturnAccessDenied() throws Exception {
 	
-	BDDMockito.when(userRepository.findById(user.get().getId())).thenReturn(user);
-	ResponseEntity<String> response= restTemplate.getForEntity("/user/{id}",String.class,user.get().getId());
-	Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(200);
-	
+	mockmvc.perform(MockMvcRequestBuilders.get("/user/1")).andExpect(status().isForbidden());
+
+  
 }
+
 @Test
-public void naoEncontrado() {
-	ResponseEntity<String> response= restTemplate.getForEntity("/user/{id}",String.class,30);
-	Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(404);
+public void shouldReturn200FindById() throws Exception {
+  
+
+	mockmvc.perform(MockMvcRequestBuilders.get("/user/1")
+            .header("Authorization", token))
+            .andExpect(status().isOk());
 }
- 
- 
- */
+
+@Test
+public void shouldReturn200DeleteById() throws Exception {
+  
+	mockmvc.perform(MockMvcRequestBuilders.delete("/user/1")
+            .header("Authorization", token))
+            .andExpect(status().isOk());
+}
+
+
+@Test
+public void shouldReturn201SaveUser() throws Exception {
+
+	String eventJosn = "{\n" + 
+			"  \"name\": \"Daiana\",\n" + 
+			"  \"password\": \"123\",\n" + 
+			"  \"userEmail\": \"DAY@DAY\"\n" + 
+			"}";
+	
+	
+	MvcResult result= mockmvc.perform(MockMvcRequestBuilders.post("/user")
+            .header("Authorization", token) .contentType(APPLICATION_JSON_UTF8).content(eventJosn)).andReturn();
+    int status = result.getResponse().getStatus();
+    assertEquals(201, status);
+}
+
+@Test
+public void shouldReturn200UpdateUser() throws Exception {
+
+	String eventJosn = " {\n" + 
+			"  \"name\": \"Daiana\",\n" + 
+			"  \"password\": \"123\",\n" + 
+			"  \"userEmail\": \"DAY@DAYANE\"\n" + 
+			"}";
+	
+	
+	MvcResult result= mockmvc.perform(MockMvcRequestBuilders.put("/user/2")
+            .header("Authorization", token) .contentType(APPLICATION_JSON_UTF8).content(eventJosn)).andReturn();
+    int status = result.getResponse().getStatus();
+    assertEquals(200, status);
+}
+
+@Test
+public void shouldReturn200GetAll() throws Exception {
+	
+	mockmvc.perform(MockMvcRequestBuilders.get("/user/users")
+            .header("Authorization", token))
+            .andExpect(status().isAccepted());
+}
+
+
 
 
 

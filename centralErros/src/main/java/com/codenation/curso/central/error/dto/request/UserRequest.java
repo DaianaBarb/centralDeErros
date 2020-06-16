@@ -18,14 +18,12 @@ public class UserRequest {
    
     private String password;
 
-    private String role;
- 
-    private short enabled;
+
     
     
     
     public User transformaParaObjeto(){
-        return new User(this.userEmail,this.name,this.role,this.name, this.enabled);
+        return new User(this.name,this.userEmail,this.password);
     }
 
 

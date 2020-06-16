@@ -1,7 +1,10 @@
 package com.codenation.curso.central.error.exceptions;
 
 public class LogResourceException extends Exception {
-	 public LogResourceException() {
+
+	private static final long serialVersionUID = 1L;
+
+	public LogResourceException() {
 	        super();
 	    }
 

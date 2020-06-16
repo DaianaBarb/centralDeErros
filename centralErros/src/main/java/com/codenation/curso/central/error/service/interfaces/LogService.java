@@ -1,12 +1,9 @@
 package com.codenation.curso.central.error.service.interfaces;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
-
 import com.codenation.curso.central.error.dto.request.LogRequest;
-import com.codenation.curso.central.error.models.ErrorLevelsEnum;
 import com.codenation.curso.central.error.models.Log;
 import com.querydsl.core.types.Predicate;
 

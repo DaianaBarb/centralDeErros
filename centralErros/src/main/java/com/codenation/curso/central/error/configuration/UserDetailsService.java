@@ -23,7 +23,6 @@ public class UserDetailsService implements org.springframework.security.core.use
 	public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
 		com.codenation.curso.central.error.models.User usuario = repository.findByUserEmail(userEmail).orElseThrow(() -> new UsernameNotFoundException("No existe usuario"));
 		List<GrantedAuthority> authorityListAdmin = AuthorityUtils.createAuthorityList("ROLE_USER","ROLE_ADMIN");
-		List<GrantedAuthority> authorityListUser = AuthorityUtils.createAuthorityList("ROLE_USER");
 		this.userMail=usuario.getUserEmail();
 		return new User(usuario.getUserEmail(),usuario.getPassword(),authorityListAdmin);
 	   

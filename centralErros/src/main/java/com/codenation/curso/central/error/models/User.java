@@ -8,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,13 +22,15 @@ import lombok.Setter;
 @Entity
 @Table(name = "TB_USER")
 public class User   implements Serializable {
-	
-	public User( String userEmail, String name,String password,String role, short enabled) {
+
+
+	public User(String name, String userEmail, String password) {
 		this.userEmail = userEmail;
 		this.name = name;
 		this.password = password;
-		this.role = role;
-		this.enabled = enabled;
+		this.role="ADMIN";
+	this.enabled=(short)1;
+		
 	}
 
 	private static final long serialVersionUID = 1L;

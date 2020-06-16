@@ -1,28 +1,19 @@
 package com.codenation.curso.central.error.services;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
 import com.codenation.curso.central.error.dto.request.LogRequest;
-import com.codenation.curso.central.error.dto.response.LogResponse;
-import com.codenation.curso.central.error.models.ErrorLevelsEnum;
 import com.codenation.curso.central.error.models.Log;
 import com.codenation.curso.central.error.repositories.LogRepository;
 import com.codenation.curso.central.error.service.interfaces.LogService;
 import com.querydsl.core.types.Predicate;
-
-
-
-
 
 @Service
 public class LogServiceImple implements LogService {

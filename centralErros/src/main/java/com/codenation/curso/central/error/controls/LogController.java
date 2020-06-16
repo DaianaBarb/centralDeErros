@@ -6,7 +6,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
-
 import com.codenation.curso.central.error.dto.request.LogRequest;
 import com.codenation.curso.central.error.dto.response.LogResponse;
 import com.codenation.curso.central.error.models.ErrorLevelsEnum;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,7 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -41,7 +38,9 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping(value="/v1/api/central-error")
 @Api(value = "Central de Erros")
+
 public class LogController {
+	
 	   @Autowired
 	   LogService logService;
 	    @Autowired	
@@ -64,6 +63,7 @@ public class LogController {
 	    @PostMapping("/saveAll")
 	    @ApiOperation(value = "Creates a new log")
 	    @ApiResponse(code = 201, message = 	"New log successfully created.", response = String.class)
+	    
 	    public ResponseEntity<List<LogResponse>> saveAllLog( @Valid @RequestBody List<LogRequest> logs){
 		 
            List< Log> logsCreated = logService.saveAll(logs);
@@ -77,7 +77,8 @@ public class LogController {
 	   @ApiResponse(code = 200, message = 	"returner log successfully", response = String.class),
 	   @ApiResponse(code = 204, message = 	"Does not contain log", response = String.class)		})
 	   @ApiOperation(value = "Returns a list of logs or returns a list of logs according to the requested filters")
-	  public ResponseEntity<Log> findByIdLog(@PathVariable("id") Long id){
+	   
+	   public ResponseEntity<Log> findByIdLog(@PathVariable("id") Long id){
 		  Optional<Log> log = logService.findById(id);
 		   if(log.isPresent()) {
 			   return new  ResponseEntity<Log>(log.get(),HttpStatus.OK);
@@ -91,7 +92,8 @@ public class LogController {
 	   @ApiResponse(code = 404, message = 	"Log not found", response = String.class)					})
 	   @ApiOperation(value="Deletes a Log.")
 	   @DeleteMapping("/{id}")
-	    	    public ResponseEntity<Log> deleteLog(@Valid @PathVariable(value="id") Long id) {
+       
+       public ResponseEntity<Log> deleteLog(@Valid @PathVariable(value="id") Long id) {
 	    	    	
 	    	        Optional<Log> log = this.logService.findById(id);
 
@@ -108,7 +110,8 @@ public class LogController {
        @ApiResponse(code = 404, message = 	"Log not found", response = String.class)					})
        @ApiOperation(value="Update a Log.")
        @PutMapping("/{id}")
-    		    	    public ResponseEntity<Log> updateLog(@Valid @PathVariable(value="id") Long id, @Valid @RequestBody LogRequest log) {
+       
+       public ResponseEntity<Log> updateLog(@Valid @PathVariable(value="id") Long id, @Valid @RequestBody LogRequest log) {
     		    	    	
     		    	        Optional<Log> logg = this.logService.findById(id);
 
@@ -147,9 +150,7 @@ public class LogController {
 	                .collect(Collectors.toList()));
 
 	        return new ResponseEntity <List<LogResponse>>(pageLog.getContent(),HttpStatus.ACCEPTED);
-	    }
-	    
-	    
+	    }	    
 	            @ApiResponses(value = {
 	    	    @ApiResponse(code = 200, message = 	"returner logs successfully", response = String.class),
 	    	    @ApiResponse(code = 204, message = 	"Does not contain logs", response = String.class)		})
@@ -166,7 +167,6 @@ public class LogController {
 	    	    @RequestParam(value = "page", required = false, defaultValue = "0") int page,
 	    	    @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
 	            
-	    	         
 	    	    	Page<Log> logs= logService.findAllPredicate(predicate, page, size);
 	    	    	Page<LogResponse> pageLog = new PageImpl<>(logs.getContent().stream()
 	    	                .map(this::convertToDto)
@@ -177,7 +177,7 @@ public class LogController {
  
 	 private LogResponse convertToDto(Log log) { return modelMapper.map(log, LogResponse.class); }
 	 
-	 private Log convertToEntity(LogResponse logDtoRequest) { return modelMapper.map(logDtoRequest, Log.class); }
+	// private Log convertToEntity(LogResponse logDtoRequest) { return modelMapper.map(logDtoRequest, Log.class); }
 
 	
    

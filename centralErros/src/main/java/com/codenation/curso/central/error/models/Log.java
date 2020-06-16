@@ -2,8 +2,6 @@
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -16,12 +14,12 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,6 +27,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "TB_LOG")
 @EntityListeners(AuditingEntityListener.class)
+
 public class Log extends Auditable<String>  implements Serializable{
 	private static final long serialVersionUID = 1L;
 

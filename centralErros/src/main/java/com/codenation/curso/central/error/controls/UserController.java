@@ -9,17 +9,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
-
 import com.codenation.curso.central.error.configuration.UserDetailsService;
 import com.codenation.curso.central.error.dto.request.UserRequest;
 import com.codenation.curso.central.error.dto.response.UserResponse;
 import com.codenation.curso.central.error.models.User;
 import com.codenation.curso.central.error.service.interfaces.UserService;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -35,7 +32,6 @@ import javassist.NotFoundException;
 @Api(value = "Central de Erros")
 public class UserController {
 	
-	private static final PasswordEncoder encoder = new BCryptPasswordEncoder();
 	
 	@Autowired
 	UserService userService;
@@ -151,11 +147,11 @@ public class UserController {
 	    @ApiResponse(code = 200, message = "Updated successfully", response = String.class),
 	    @ApiResponse(code = 404, message = 	"User not found", response = String.class)		})
 	    @ApiOperation(value="Allows you to change a registered user.")
-	    @PutMapping()
+	    @PutMapping("/{id}")
 	    @ResponseStatus(HttpStatus.OK)
-	    public ResponseEntity<UserResponse> updateUser(@Valid @RequestBody User user ) {
+	    public ResponseEntity<UserResponse> updateUser(@PathVariable(value="id") Long id ,@Valid @RequestBody UserRequest user ) {
 	       
-	        Optional<User> userInfo = this.userService.findById(user.getId());
+	        Optional<User> userInfo = this.userService.findById(id);
 
 	        if (userInfo.isPresent()) {
 	        	
@@ -210,12 +206,8 @@ public class UserController {
 	
 	 
 	 
-	private void encodeAll(List<User> users) {
-		users.forEach(this::encode);
-	}
-	private void encode(User user) {
-		user.setPassword(encoder.encode(user.getPassword()));
-	}
+	//private void encodeAll(List<User> users) {	users.forEach(this::encode);}
+	//private void encode(User user) {	user.setPassword(encoder.encode(user.getPassword()));}
 	private UserResponse convertToDto(User user) { return modelMapper.map(user, UserResponse.class); }
     private User convertToEntity(UserRequest userDTORequest) { return modelMapper.map(userDTORequest, User.class); }
 

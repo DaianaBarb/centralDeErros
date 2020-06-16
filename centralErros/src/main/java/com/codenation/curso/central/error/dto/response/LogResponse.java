@@ -1,7 +1,6 @@
 package com.codenation.curso.central.error.dto.response;
 
 import java.time.LocalDate;
-import java.util.Date;
 import com.codenation.curso.central.error.models.ErrorLevelsEnum;
 import com.codenation.curso.central.error.models.Log;
 import lombok.Getter;
