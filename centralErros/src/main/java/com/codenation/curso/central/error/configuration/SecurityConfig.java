@@ -44,8 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.and().csrf()
 		.disable()
 		.authorizeRequests()
-		.antMatchers(HttpMethod.GET,SecurityConstants.SING_UP_URL)
-		.permitAll()
+		.antMatchers(HttpMethod.GET,SecurityConstants.SING_UP_URL,"user/gerarToken")
+		.permitAll().antMatchers(HttpMethod.POST,"user/","user/saveAll").permitAll()
 		.and().addFilter(new JWTAuthenticationFilter(authenticationManager()))  // adicionou um filtro
 		.addFilter(new JWTAuthorizationFilter(authenticationManager(), userDetailsService()));
 		

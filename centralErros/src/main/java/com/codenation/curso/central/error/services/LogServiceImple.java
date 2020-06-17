@@ -1,5 +1,6 @@
 package com.codenation.curso.central.error.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -10,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.codenation.curso.central.error.dto.request.LogRequest;
+import com.codenation.curso.central.error.dto.response.LogResponse;
+import com.codenation.curso.central.error.models.ErrorLevelsEnum;
 import com.codenation.curso.central.error.models.Log;
 import com.codenation.curso.central.error.repositories.LogRepository;
 import com.codenation.curso.central.error.service.interfaces.LogService;
@@ -62,6 +65,7 @@ public class LogServiceImple implements LogService {
 	@Override
 	public Page<Log> findAllPredicate(Predicate predicate, int page, int size) {
 		Pageable paging = PageRequest.of(page, size);
+		
         Page<Log> logs = logRepository.findAll(predicate, paging);
         return logs;
     }
@@ -70,6 +74,12 @@ public class LogServiceImple implements LogService {
 		return logRepository.saveAll(logs.stream().map(log->log
 				.transformaParaObjeto())
 				.collect(Collectors.toList()));
+	}
+	@Override
+	public Page<Log> findByDate(
+			LocalDate date, int page, int size) {
+		Pageable paging = PageRequest.of(page, size);
+		return logRepository.findByDate(date, paging);
 	}
 	
 	

@@ -1,5 +1,6 @@
 package com.codenation.curso.central.error.service.interfaces;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -16,5 +17,5 @@ public interface LogService {
 	  public List<Log> saveAll(List<LogRequest> logs);
 	  public Log deleteLog(Long id);
 	  public Page<Log> findAllPredicate(Predicate predicate, int page, int size);
-
+      public Page<Log> findByDate(LocalDate date, int page, int size);
 }

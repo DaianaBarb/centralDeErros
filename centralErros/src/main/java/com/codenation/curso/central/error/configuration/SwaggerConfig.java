@@ -3,9 +3,13 @@ package com.codenation.curso.central.error.configuration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.BasicAuth;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.SecurityScheme;
@@ -17,7 +21,8 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 
 import java.util.ArrayList;
-
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -29,13 +34,13 @@ public class SwaggerConfig {
 		 List<SecurityScheme> auth = new ArrayList<SecurityScheme>();
 	      auth.add(new BasicAuth("bearer"));
         return new Docket(DocumentationType.SWAGGER_2)
+        		.securitySchemes(auth)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.codenation.curso.central.error"))
                 .paths(PathSelectors.any()) // qualuer caminho
                 .build()
-                //.securitySchemes ( matrizes . asList (securityScheme ()))
-				//.securityContexts ( matrizes . asList (securityContext ()))
                 .apiInfo(metaInfo());
+               
         /*para colocar o token requerido para todos os metodos do controller
          depois de build colocar...
         .globalOperationParameters(Collections
@@ -43,6 +48,7 @@ public class SwaggerConfig {
         				.name("Authorization").description("Barear token").modelRef(new ModelRef("string")).parameterType("header").required(true).build()))
         */
     }
+	
 
     private ApiInfo metaInfo() {
 

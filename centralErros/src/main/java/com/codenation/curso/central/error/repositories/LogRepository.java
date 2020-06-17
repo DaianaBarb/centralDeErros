@@ -27,7 +27,7 @@ public interface LogRepository extends JpaRepository<Log, Long>, QuerydslPredica
     
 	 Page<Log> findByErrorLevel(ErrorLevelsEnum errorLevel, Pageable paging);
 	 
-	 Page<Log> findByDate(LocalDate date, Pageable paging);
+	 Page<Log> findByDate(LocalDate date , Pageable paging);
 	 
 	 Page<Log> findByOriginIgnoreCase(String origin, Pageable paging);
 	 
@@ -36,7 +36,7 @@ public interface LogRepository extends JpaRepository<Log, Long>, QuerydslPredica
 	 Page<Log> findByLogDoEventoIgnoreCase(String logDoEvento, Pageable paging);
 	 
 	 Page<Log> findByQuantity(int quantity, Pageable paging);
-	// @SuppressWarnings("NullableProblems")
+	 @SuppressWarnings("NullableProblems")
 	   @Override
 	    default void customize(QuerydslBindings bindings, QLog log) {
 
@@ -47,9 +47,9 @@ public interface LogRepository extends JpaRepository<Log, Long>, QuerydslPredica
 	        bindings.bind(String.class)
 	                .first((SingleValueBinding<StringPath, String>) StringExpression::containsIgnoreCase);
 
-	        // a data nao e string e Date
+	        //a data nao e string e Date
 	        bindings.bind(log.date).first((path, value) -> {
-	            return path.eq(value);
+	           return path.eq(value);
 	        });
 
 	        // a quantidade nao e string e Integer

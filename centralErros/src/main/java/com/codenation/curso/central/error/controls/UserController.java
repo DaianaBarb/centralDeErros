@@ -94,7 +94,7 @@ public class UserController {
 	@ApiResponse(code = 201, message = "new users successfully created.", response = String.class),
 	@ApiResponse(code = 208, message = "Some user inserted already exists", response = String.class)				})
 	@ApiOperation(value="Create a new users")
-	@PostMapping("/all")
+	@PostMapping("/saveAll")
 	public ResponseEntity<List<UserResponse>> saveAll(@Valid @RequestBody List<UserRequest> users) {
 		
 		
@@ -124,7 +124,7 @@ public class UserController {
 	 @ApiResponse(code = 200, message = 	"returner users successfully", response = String.class),
 	 @ApiResponse(code = 204, message = 	"Does not contain users", response = String.class)		})
 	 @ApiOperation(value = "Returns a list of registered users.")
-	 @GetMapping("/users")
+	 @GetMapping()
 	 @ApiImplicitParams({
      @ApiImplicitParam(name="Authorization",value="Bearer token", 
 				 required=true, dataType="string", paramType="header") })
@@ -149,6 +149,9 @@ public class UserController {
 	    @ApiOperation(value="Allows you to change a registered user.")
 	    @PutMapping("/{id}")
 	    @ResponseStatus(HttpStatus.OK)
+	    @ApiImplicitParams({
+	    @ApiImplicitParam(name="Authorization",value="Bearer token", 
+	   				 required=true, dataType="string", paramType="header") })
 	    public ResponseEntity<UserResponse> updateUser(@PathVariable(value="id") Long id ,@Valid @RequestBody UserRequest user ) {
 	       
 	        Optional<User> userInfo = this.userService.findById(id);
@@ -156,6 +159,8 @@ public class UserController {
 	        if (userInfo.isPresent()) {
 	        	
 	        	userInfo.get().setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+	        	userInfo.get().setName(user.getName());
+	        	userInfo.get().setUserEmail(user.getUserEmail());
 	        	 this.userService.save(userInfo.get());
 	            
 	        }
@@ -170,6 +175,9 @@ public class UserController {
 	    @ApiResponse(code = 404, message = 	"User not found", response = String.class)					})
 	    @ApiOperation(value="Deletes a user.")
 	    @DeleteMapping("/{id}")
+	    @ApiImplicitParams({
+	    @ApiImplicitParam(name="Authorization",value="Bearer token", 
+	   	 required=true, dataType="string", paramType="header") })
 	    public ResponseEntity<Void> deleteUser(@Valid @PathVariable Long id) {
 	    	
 	        Optional<User> user =  this.userService.findById(id);
@@ -191,6 +199,9 @@ public class UserController {
 	    @ApiOperation(value="find a user by id.")
 	    @GetMapping("/{id}")
 	    @ResponseStatus(HttpStatus.OK)
+	    @ApiImplicitParams({
+	    @ApiImplicitParam(name="Authorization",value="Bearer token", 
+     	 required=true, dataType="string", paramType="header") })
 	    public ResponseEntity<UserResponse> findByUser(@Valid @PathVariable Long id) {
 	    	
 	        Optional<User> user =  this.userService.findById(id);
