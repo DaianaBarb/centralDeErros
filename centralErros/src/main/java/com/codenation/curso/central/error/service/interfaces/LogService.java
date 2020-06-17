@@ -17,5 +17,5 @@ public interface LogService {
 	  public List<Log> saveAll(List<LogRequest> logs);
 	  public Log deleteLog(Long id);
 	  public Page<Log> findAllPredicate(Predicate predicate, int page, int size);
-      public Page<Log> findByDate(LocalDate date, int page, int size);
+     
 }

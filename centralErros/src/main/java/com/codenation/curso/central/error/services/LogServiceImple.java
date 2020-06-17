@@ -75,12 +75,7 @@ public class LogServiceImple implements LogService {
 				.transformaParaObjeto())
 				.collect(Collectors.toList()));
 	}
-	@Override
-	public Page<Log> findByDate(
-			LocalDate date, int page, int size) {
-		Pageable paging = PageRequest.of(page, size);
-		return logRepository.findByDate(date, paging);
-	}
+	
 	
 	
 

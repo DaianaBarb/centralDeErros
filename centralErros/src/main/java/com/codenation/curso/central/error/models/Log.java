@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -57,8 +59,8 @@ public class Log extends Auditable<String>  implements Serializable{
     private String origin;
     
  // @NotBlank(message = "Date is can not be blank")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @NotNull(message = "Date is a required parameter")
-    @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column
     private LocalDate date;

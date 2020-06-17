@@ -60,7 +60,7 @@ public class LogController {
 	    @ApiResponse(code = 201, message = 	"New log successfully created.", response = String.class)
 	    @ApiImplicitParams({
 	    @ApiImplicitParam(name="Authorization",value="Bearer token", 
-     	 required=true, dataType="string", paramType="header") })
+      required=true, dataType="string", paramType="header") })
 	    
 	    public ResponseEntity<LogResponse> saveLog( @Valid @RequestBody LogRequest log){
 		 
@@ -182,13 +182,13 @@ public class LogController {
 	    	    @ApiOperation(value ="Returns a list of logs according to the requested parameter")
 	            @ApiImplicitParams({
 	            @ApiImplicitParam(name="Authorization",value="Bearer token", 
-	             required=true, dataType="string", paramType="header") })
+	           required=true, dataType="string", paramType="header") })
 	        	    
 	    	    public ResponseEntity<List<LogResponse>> findAll( @QuerydslPredicate(root = Log.class) Predicate predicate,
 	    	    		@ApiParam  @RequestParam(required = false) String origin,
 	    	    		@ApiParam  @RequestParam(required =false) ErrorLevelsEnum errorLevel,
 	    	    		@ApiParam  @RequestParam(required =false) String description,
-	    	    		//@ApiParam  @RequestParam(required =false) LocalDate date,
+	    	    		@ApiParam  @RequestParam(required =false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
 	    	    		@ApiParam  @RequestParam(required =false) String logDoEvento,
 	    	    		@ApiParam  @RequestParam(required =false)  String  quantity,
 	    	            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
@@ -201,28 +201,6 @@ public class LogController {
 
 	    	        return new ResponseEntity <List<LogResponse>>(pageLog.getContent(),HttpStatus.ACCEPTED);
 	    	    }
-	                    @ApiResponses(value = {
-	    	    	    @ApiResponse(code = 200, message = 	"returner logs successfully", response = String.class),
-	    	    	    @ApiResponse(code = 204, message = 	"Does not contain logs", response = String.class)		})
-	    	    	    @GetMapping("/getAllDate")
-	    	    	    @ApiOperation(value ="Returns a list of logs by date")
-	                    @ApiImplicitParams({
-	        	        @ApiImplicitParam(name="Authorization",value="Bearer token", 
-	             	 required=true, dataType="string", paramType="header") })
-	        	    
-	    	    	    public ResponseEntity<List<LogResponse>> findAllDateAndParameter(
-	    	    	    		  @RequestParam(required =false) String date,
-	    	    	    		
-	    	    	            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
-	    	    	            @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
-	    	                    
-	    	    	    	Page<Log> logs= logService.findByDate(LocalDate.parse(date),page, size);
-	    	    	    	Page<LogResponse> pageLog = new PageImpl<>(logs.getContent().stream()
-	    	    	                .map(this::convertToDto)
-	    	    	                .collect(Collectors.toList()));
-
-	    	    	        return new ResponseEntity <List<LogResponse>>(pageLog.getContent(),HttpStatus.ACCEPTED);
-	    	    	    }
 	            
 	            
 	            
