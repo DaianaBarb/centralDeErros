@@ -79,12 +79,13 @@ public class Log extends Auditable<String>  implements Serializable{
 		this.description=description;
 		this.quantity=quantity;
 	}
-	public Log(ErrorLevelsEnum errorLevel, String description, String origin, LocalDate date,int quantity) {
+	public Log(ErrorLevelsEnum errorLevel, String description, String origin, LocalDate date,int quantity,String logDoEvento) {
 		this.errorLevel=errorLevel;
 		this.date=date;
 		this.origin=origin;
 		this.description=description;
 		this.quantity=quantity;
+		this.logDoEvento=logDoEvento;
 	}
 	
 	public Log(Long id, ErrorLevelsEnum errorLevel, String description, String origin, LocalDate date,

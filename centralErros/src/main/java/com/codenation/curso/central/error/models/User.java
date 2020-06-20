@@ -25,6 +25,7 @@ public class User   implements Serializable {
 
 
 	public User(String name, String userEmail, String password) {
+		
 		this.userEmail = userEmail;
 		this.name = name;
 		this.password = password;
@@ -32,6 +33,8 @@ public class User   implements Serializable {
 	this.enabled=(short)1;
 		
 	}
+
+	
 
 	private static final long serialVersionUID = 1L;
     @Id

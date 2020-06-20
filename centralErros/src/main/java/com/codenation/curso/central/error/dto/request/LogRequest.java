@@ -26,10 +26,12 @@ public class LogRequest {
 	
 	private int quantity;
 	
+	private String logDoEvento;
+	
 	
 	
 	 public Log transformaParaObjeto(){
-	        return new Log(this.errorLevel,this.description,this.origin,this.date,this.quantity);
+	        return new Log(this.errorLevel,this.description,this.origin,this.date,this.quantity,this.logDoEvento);
 	    }
 
 	
