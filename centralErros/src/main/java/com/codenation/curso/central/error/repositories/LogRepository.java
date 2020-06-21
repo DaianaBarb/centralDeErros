@@ -21,7 +21,7 @@ public interface LogRepository extends JpaRepository<Log, Long>, QuerydslPredica
 {
 	 
 	 Page<Log> findByQuantity(int quantity, Pageable paging);
-	 @SuppressWarnings("NullableProblems")
+	// @SuppressWarnings("NullableProblems")
 	   @Override
 	    default void customize(QuerydslBindings bindings, QLog log) {
 

@@ -1,7 +1,6 @@
 package com.codenation.curso.central.error.controls;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -13,7 +12,6 @@ import com.codenation.curso.central.error.models.ErrorLevelsEnum;
 import com.codenation.curso.central.error.models.Log;
 import com.codenation.curso.central.error.repositories.LogRepository;
 import com.codenation.curso.central.error.service.interfaces.LogService;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,7 +23,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -88,7 +85,7 @@ public class LogController {
 	   @ApiResponses(value = {
 	   @ApiResponse(code = 200, message = 	"returner log successfully", response = String.class),
 	   @ApiResponse(code = 204, message = 	"Does not contain log", response = String.class)		})
-	   @ApiOperation(value = "Returns a list of logs or returns a list of logs according to the requested filters")
+	   @ApiOperation(value = "Returns log by id")
 	   @ApiImplicitParams({
 	   @ApiImplicitParam(name="Authorization",value="Bearer token", 
     	 required=true, dataType="string", paramType="header") })
@@ -195,6 +192,7 @@ public class LogController {
 	    	            @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
 	                     
 	    	    	Page<Log> logs= logService.findAllPredicate(predicate, page, size);
+	    	    	
 	    	    	Page<LogResponse> pageLog = new PageImpl<>(logs.getContent().stream()
 	    	                .map(this::convertToDto)
 	    	                .collect(Collectors.toList()));

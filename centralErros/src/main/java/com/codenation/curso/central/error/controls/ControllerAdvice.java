@@ -10,6 +10,8 @@ import com.codenation.curso.central.error.exceptions.ResourceNotFoundException;
 
 @org.springframework.web.bind.annotation.ControllerAdvice
 public class ControllerAdvice {
+	
+	
 @ExceptionHandler(MethodArgumentNotValidException.class)
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 @ResponseBody
