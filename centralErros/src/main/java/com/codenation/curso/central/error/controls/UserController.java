@@ -1,14 +1,10 @@
 package com.codenation.curso.central.error.controls;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import javax.validation.Valid;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
@@ -38,9 +34,7 @@ public class UserController {
 	
 	@Autowired
 	UserDetailsService userdetails;
-	
-    @Autowired
-    private ModelMapper modelMapper;
+
     
 	@Autowired
 	private RestTemplate restTemplate;
@@ -71,53 +65,20 @@ public class UserController {
 	@ApiResponse(code = 201, message = 	"new user successfully created.", response = String.class)	})
 	@ApiOperation(value="Create a new user")
 	@PostMapping()
+	
 	public ResponseEntity<UserResponse> save(@Valid @RequestBody UserRequest usuario) {
 		
-		User userInfo =  this.userService.getUserInfoByUserEmail(usuario.getUserEmail());
-		User user;
-		
-	    if (userInfo == null) {
-	    
-	    usuario.setPassword(new BCryptPasswordEncoder().encode(usuario.getPassword()));
-	    user =  this.userService.save(usuario.transformaParaObjeto());
-        
-	    }
-	    else {
-            
-	    	throw new ResponseStatusException(HttpStatus.ALREADY_REPORTED, "Email already exists, id: " + userInfo.getId());
-        }
-	    
-	    
-	    return new ResponseEntity<>(UserResponse.transformaEmDTO(user), HttpStatus.CREATED);
+	return this.userService.save((usuario.transformaParaObjeto()));
+	
 	}
 	@ApiResponses(value = {
 	@ApiResponse(code = 201, message = "new users successfully created.", response = String.class),
 	@ApiResponse(code = 208, message = "Some user inserted already exists", response = String.class)				})
 	@ApiOperation(value="Create a new users")
 	@PostMapping("/saveAll")
+	
 	public ResponseEntity<List<UserResponse>> saveAll(@Valid @RequestBody List<UserRequest> users) {
-		
-		
-		List<User> listUsers=users.stream().map(user-> user.transformaParaObjeto())
-				.filter(user->user.equals(this.userService.getUserInfoByUserEmail(user.getUserEmail())))
-				.map(user-> user).collect(Collectors.toList());
-		
-		 if(listUsers.isEmpty()) {
-			 
-	    	listUsers= users.stream().map(usu->usu.transformaParaObjeto()).
-	    			map((user)->{
-	    		 user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-	    		 return user;
-	    	 }).collect(Collectors.toList());
-	    	
-	    	
-	    	this.userService.saveAll(listUsers);
-	    	return new ResponseEntity<List<UserResponse>>(users.stream().map(usu->this.convertToEntity(usu))
-	    			.map(user-> this.convertToDto(user)).collect(Collectors.toList()), HttpStatus.CREATED);
-	     }
-		 
-		 throw new ResponseStatusException(HttpStatus.ALREADY_REPORTED, 
-		 		"Some user inserted already exists");
+		return this.userService.saveAll(users);
 	    
 	}
 	 @ApiResponses(value = {
@@ -128,20 +89,11 @@ public class UserController {
 	 @ApiImplicitParams({
      @ApiImplicitParam(name="Authorization",value="Bearer token", 
 				 required=true, dataType="string", paramType="header") })
+	 
 	    public ResponseEntity<List<UserResponse>> getAllUser(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
                 @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
 		 
-		 Page<User> users =  this.userService.getAllUsers(page,size);
-		 
-	        if (users == null || users.isEmpty()) {
-	        	
-	        	 throw new ResponseStatusException(HttpStatus.NO_CONTENT,
-	        	 		"Does not contain users");
-	        }
-	      List<UserResponse> dto= users.stream().map(user->this.convertToDto(user)).collect(Collectors.toList());
-             
-	      
-	      return new ResponseEntity<List<UserResponse>>(dto,HttpStatus.OK);
+		return  this.userService.getAllUsers(page, size);
 	    }
 	    @ApiResponses(value = {
 	    @ApiResponse(code = 200, message = "Updated successfully", response = String.class),
@@ -152,23 +104,10 @@ public class UserController {
 	    @ApiImplicitParams({
 	    @ApiImplicitParam(name="Authorization",value="Bearer token", 
 	   				 required=true, dataType="string", paramType="header") })
+	    
 	    public ResponseEntity<UserResponse> updateUser(@PathVariable(value="id") Long id ,@Valid @RequestBody UserRequest user ) {
 	       
-	        Optional<User> userInfo = this.userService.findById(id);
-
-	        if (userInfo.isPresent()) {
-	        	
-	        	userInfo.get().setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-	        	userInfo.get().setName(user.getName());
-	        	userInfo.get().setUserEmail(user.getUserEmail());
-	        	 this.userService.save(userInfo.get());
-	            
-	        }
-	        else{
-	            throw new ResponseStatusException( HttpStatus.NOT_FOUND, "User not found");
-	        }
-	        
-	        return new ResponseEntity<UserResponse>( this.convertToDto(userInfo.get()),HttpStatus.OK);
+	    	return this.userService.updateUser(id, user.transformaParaObjeto());
 	    }
 	    @ApiResponses(value = {
 	    @ApiResponse(code = 200, message = "Deleted successfully", response = String.class),
@@ -178,20 +117,10 @@ public class UserController {
 	    @ApiImplicitParams({
 	    @ApiImplicitParam(name="Authorization",value="Bearer token", 
 	   	 required=true, dataType="string", paramType="header") })
+	    
 	    public ResponseEntity<Void> deleteUser(@Valid @PathVariable Long id) {
-	    	
-	        Optional<User> user =  this.userService.findById(id);
-
-	        if (user.isPresent()) {
-	        	
-	            userService.deleteUser(id);
-	        } 
-	        else {
-	            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
-	        }
-	        
-	        
-	        return new ResponseEntity<Void>(HttpStatus.OK);
+	    	   	
+	          return  userService.deleteUser(id);
 	    }
 	    @ApiResponses(value = {
 	    @ApiResponse(code = 200, message = "Successfully found", response = String.class),
@@ -202,24 +131,15 @@ public class UserController {
 	    @ApiImplicitParams({
 	    @ApiImplicitParam(name="Authorization",value="Bearer token", 
      	 required=true, dataType="string", paramType="header") })
-	    public ResponseEntity<UserResponse> findByUser(@Valid @PathVariable Long id) {
+	    
+	    public ResponseEntity<UserResponse> findById(@Valid @PathVariable Long id) {
 	    	
-	        Optional<User> user =  this.userService.findById(id);
+	        return this.userService.findById(id);
 
-	        if (user.isPresent()) {
-	        	
-	            return new ResponseEntity<UserResponse> (this.convertToDto(user.get()),HttpStatus.OK);
-	        } 
-	        else {
-	            throw new ResponseStatusException( HttpStatus.NOT_FOUND, "User not found");
-	        }
 	    }
 	
 	 
 	 
-	//private void encodeAll(List<User> users) {	users.forEach(this::encode);}
-	//private void encode(User user) {	user.setPassword(encoder.encode(user.getPassword()));}
-	private UserResponse convertToDto(User user) { return modelMapper.map(user, UserResponse.class); }
-    private User convertToEntity(UserRequest userDTORequest) { return modelMapper.map(userDTORequest, User.class); }
+	
 
 }
